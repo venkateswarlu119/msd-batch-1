@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Places in Guntur</title>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://www.holidaylandmark.com/blog/wp-content/uploads/2024/09/Top-Tourist-Places-to-Visit-in-Guntur6-1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 20px;
+      color: #ffffff;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffeb3b;
+      font-size: 3em;
+      font-weight: 600;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+      animation: fadeIn 2s ease-in-out;
+      margin-bottom: 30px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    .controls input,
+    .controls select,
+    .controls button {
+      padding: 10px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .controls input,
+    .controls select {
+      background-color: #ffffff;
+      color: #333;
+    }
+
+    .controls button {
+      background: linear-gradient(45deg, #00796b, #00b894);
+      color: white;
+      border: none;
+    }
+
+    .controls button:hover {
+      background: linear-gradient(45deg, #005f4f, #008f6b);
+      transform: scale(1.05);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Card hover effect: Scale and shadow glow */
+    .card:hover {
+      transform: translateY(-10px) scale(1.05); /* Lift and scale the card */
+      box-shadow: 0 8px 20px rgba(0, 255, 255, 0.6), 0 16px 30px rgba(0, 255, 255, 0.4); /* Glowing shadow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+      border: 2px solid #00ffcc; /* Neon border */
+    }
+
+    /* Image hover effect: Zoom in */
+    .card img:hover {
+      transform: scale(1.1); /* Zoom in the image */
+      transition: transform 0.3s ease; /* Smooth transition */
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      cursor: pointer;
+      border-bottom: 2px solid #00796b;
+      transition: transform 0.3s ease;
+    }
+
+    .description {
+      padding: 15px;
+      font-size: 15px;
+      color: #444;
+      text-align: justify;
+      line-height: 1.6;
+    }
+
+    .place-name {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #00796b;
+      margin: 10px 0;
+    }
+
+    .favorite-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      color: white;
+      opacity: 0.9;
+      transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 4px;
+      border-radius: 50%;
+    }
+
+    .favorite-icon:hover {
+      transform: scale(1.3);
+      color: gold;
+    }
+
+    .card.favorited .favorite-icon {
+      color: red;
+    }
+
+    .rating span {
+      font-size: 20px;
+      cursor: pointer;
+      color: gray;
+      transition: color 0.3s ease;
+    }
+
+    .rating span:hover,
+    .rating span:hover ~ span {
+      color: gold;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px); /* Blur effect for modal background */
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .modal-content {
+      display: flex;
+      flex-wrap: wrap;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 1000px;
+      gap: 30px;
+      box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc, 0 0 45px #00ffcc;
+      border: 2px solid #00ffcc;
+      transition: box-shadow 0.3s ease, border 0.3s ease;
+    }
+
+    .modal img {
+      width: 320px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-details {
+      font-size: 15px;
+      color: #333;
+      max-width: 600px;
+    }
+
+    .modal-details h2 {
+      margin-top: 0;
+      color: #00796b;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    .modal-details p {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+
+    .close {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      z-index: 10000;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    body.dark-mode .card {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <h1 data-aos="fade-down">Top Places in Guntur</h1>
+
+  <div class="controls">
+    <input type="text" id="searchBar" placeholder="Search for a place..." oninput="filterPlaces()" />
+    <select id="sortOptions" onchange="sortPlaces()">
+      <option value="name">Sort by Name</option>
+      <option value="budget">Sort by Budget</option>
+    </select>
+    <button onclick="showFavorites()">Show Favorites</button>
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </div>
+
+  <div class="grid" id="placesGrid"></div>
+
+  <div class="modal" id="modal" onclick="outsideModalClose(event)">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+      <img id="modalImg" src="" alt="Location Image" />
+      <div class="modal-details" id="modalDetails"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    const places = [
+      {
+        name: "Amaravati Stupa",
+        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDKOiUXZXt4rpa8mYZK80heF3G1wHDzgneaw&s",
+        description: "Ancient Buddhist stupa known for its carved panels and spiritual significance.",
+        when: "October to March",
+        how: "🚗 Guntur → Amaravati Bus Stop → 🏃 Walk 500m to Stupa",
+        location: "Amaravati, Andhra Pradesh",
+        budget: "INR 500 - 1000"
+      },
+      {
+        name: "Krishna River",
+        img: "https://amoghavarshaiaskas.in/wp-content/uploads/2025/01/Key-Facts-about-Krishna-River.jpg",
+        description: "A scenic river ideal for boat rides and evening strolls.",
+        when: "All seasons",
+        how: "🚗 Guntur → Krishna River Ghat (Vijayawada or Undavalli)",
+        location: "Krishna River, Guntur",
+        budget: "INR 0 - 300"
+      },
+      {
+        name: "Nagarjuna Sagar Dam",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/NagarjunaSagarDam.JPG/1200px-NagarjunaSagarDam.JPG",
+        description: "One of the largest dams in India, offering breathtaking views.",
+        when: "July to October",
+        how: "🚗 Guntur → Macherla → Nagarjuna Sagar",
+        location: "Nalgonda District, Telangana",
+        budget: "INR 500 - 1000"
+      },
+      {
+        name: "Nagarjuna Konda",
+        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1aKXTS3ni96DU7VugTeEGi8lQ-yl_H4QDZQ&s",
+        description: "Island museum with Buddhist relics, reachable by boat.",
+        when: "November to February",
+        how: "🚗 Guntur → Nagarjuna Sagar → ⛴️ Ferry to Nagarjuna Konda",
+        location: "Nagarjuna Konda, Andhra Pradesh",
+        budget: "INR 1000 - 1500"
+      },
+      {
+        name: "Amaravati Archaeological Museum",
+        img: "https://s7ap1.scene7.com/is/image/incredibleindia/amaravati-archaeological-museum-amaravati-andhra-pradesh-4-attr-hero?qlt=82&ts=1726743670605",
+        description: "Preserves sculptures, coins, and relics from Amaravati era.",
+        when: "October to March",
+        how: "🚗 Guntur → Amaravati Museum (Near Stupa)",
+        location: "Amaravati, Andhra Pradesh",
+        budget: "INR 20 Entry"
+      },
+      {
+        name: "Undavalli Caves",
+        img: "https://farm4.staticflickr.com/3003/2641963924_56782f6f05_z.jpg",
+        description: "Rock-cut caves showcasing Indian rock architecture.",
+        when: "All year (avoid monsoon)",
+        how: "🚗 Guntur → Undavalli Village → 🏞️ Caves",
+        location: "Undavalli, Andhra Pradesh",
+        budget: "INR 30 - 100"
+      },
+      {
+        name: "Mangalagiri",
+        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZEbg3u6ankNnLV32AmhqJk6VUiyHOMj2TyA&s",
+        description: "Hill town famous for Panakala Narasimha Swamy Temple.",
+        when: "October to February",
+        how: "🚗 Guntur → Mangalagiri Town → 🛕 Temple",
+        location: "Mangalagiri, Guntur",
+        budget: "INR 100 - 500"
+      },
+      {
+        name: "Chaturmukha Brahma Temple",
+        img: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgxPdoOVgUB_78CnkRTtuEgNSpDYeSLg20dNnN6IH_Y-wcpdoQSWHWhZE3Y0EB71HlZ8ACBvj1rBO-icIlKwizTU5dcZ-t77DCg50UGVdJxY99SbgywXMEURgXBclsUna2hPWPxOm6McQdOtSG0ZLadtLjeOeT4qfAyif2cwUmt1UlgG_UvbCENWBxBuEGg/s1040/sri-chathurmukha-brahmalingeshwara-swamy-temple-chebrolu.webp",
+        description: "Rare Brahma temple in India, located in Chebrolu.",
+        when: "Anytime",
+        how: "🚗 Guntur → Chebrolu → 🛕 Temple",
+        location: "Chebrolu, Guntur",
+        budget: "INR 50 - 200"
+      },
+      {
+        name: "Chandavaram Stupa",
+        img: "https://cdn.sanity.io/images/nlpqts3z/production/29df1002c6ebb67f7aaa24ee8e23619309e77c1e-700x394.jpg",
+        description: "Historic Buddhist site with serene surroundings.",
+        when: "October to March",
+        how: "🚗 Guntur → Narasaraopet → Chandavaram",
+        location: "Chandavaram, Prakasam District",
+        budget: "INR 100 - 400"
+      },
+      {
+        name: "Vijayawada",
+        img: "https://vijayawadatourism.com/images/places-to-visit/headers/kanaka-durga-temple-vijayawada-entry-fee-timings-holidays-reviews-header.jpg",
+        description: "Bustling city with Durga Temple and riverfront charm.",
+        when: "All seasons",
+        how: "🚆 Guntur Railway → Vijayawada Jn → 🛕 Kanaka Durga Temple",
+        location: "Vijayawada, Andhra Pradesh",
+        budget: "INR 300 - 1000"
+      },
+      {
+        name: "Uppalapadu Bird Sanctuary",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Uppalapadu_Bird_Sanctuary_Entrance.jpg/1200px-Uppalapadu_Bird_Sanctuary_Entrance.jpg",
+        description: "Migratory birds' paradise near Guntur.",
+        when: "October to March",
+        how: "🚗 Guntur → Uppalapadu → 🐦 Bird Sanctuary",
+        location: "Uppalapadu, Guntur",
+        budget: "INR 20 Entry"
+      },
+      {
+        name: "Raja Mahal",
+        img: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Raaja_mahal_1.JPG",
+        description: "Historic palace showcasing royal architecture.",
+        when: "November to February",
+        how: "🚗 Guntur → Rajupalem → 🏯 Raja Mahal",
+        location: "Guntur District",
+        budget: "INR 50 - 200"
+      }
+    ];
+
+    const grid = document.getElementById('placesGrid');
+    places.forEach(place => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-aos', 'zoom-in');
+      card.innerHTML = `
+        <img src="${place.img}" onclick='openModal(${JSON.stringify(place)})' />
+        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+        <div class="description">${place.description}</div>
+        <div class="place-name">${place.name}</div>
+        <div class="rating">
+          <span onclick="ratePlace(this, 1)">★</span>
+          <span onclick="ratePlace(this, 2)">★</span>
+          <span onclick="ratePlace(this, 3)">★</span>
+          <span onclick="ratePlace(this, 4)">★</span>
+          <span onclick="ratePlace(this, 5)">★</span>
+        </div>
+        <button onclick="toggleVisited(this)">Mark as Visited</button>
+      `;
+      card.querySelector('.favorite-icon').addEventListener('click', function(event) {
+        event.stopPropagation();
+        card.classList.toggle('favorited');
+      });
+      grid.appendChild(card);
+    });
+
+    let showOnlyFavorites = false; // Track the toggle state
+
+    function openModal(place) {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'flex';
+      document.getElementById('modalImg').src = place.img;
+
+      const mapQuery = encodeURIComponent(place.location);
+      document.getElementById('modalDetails').innerHTML = `
+        <h2>${place.name}</h2>
+        <p><strong>Description:</strong> ${place.description}</p>
+        <p><strong>Best Time to Visit:</strong> ${place.when}</p>
+        <p><strong>How to Reach:</strong> ${place.how}</p>
+        <p><strong>Location:</strong> ${place.location}</p>
+        <p><strong>Estimated Budget:</strong> ${place.budget}</p>
+        <iframe 
+          width="100%" 
+          height="250" 
+          style="margin-top: 15px; border: none; border-radius: 12px;"
+          src="https://www.google.com/maps?q=${mapQuery}&output=embed">
+        </iframe>
+      `;
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    function outsideModalClose(event) {
+      const modalContent = document.querySelector('.modal-content');
+      if (!modalContent.contains(event.target)) {
+        closeModal();
+      }
+    }
+
+    function filterPlaces() {
+      const query = document.getElementById('searchBar').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const placeName = card.querySelector('.place-name').textContent.toLowerCase();
+        if (placeName.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function sortPlaces() {
+      const option = document.getElementById('sortOptions').value;
+      const grid = document.getElementById('placesGrid');
+      const cards = Array.from(grid.children);
+
+      cards.sort((a, b) => {
+        if (option === 'name') {
+          return a.querySelector('.place-name').textContent.localeCompare(b.querySelector('.place-name').textContent);
+        } else if (option === 'budget') {
+          const budgetA = parseInt(a.querySelector('.description').textContent.match(/\d+/) || 0);
+          const budgetB = parseInt(b.querySelector('.description').textContent.match(/\d+/) || 0);
+          return budgetA - budgetB;
+        }
+      });
+
+      cards.forEach(card => grid.appendChild(card));
+    }
+
+    function ratePlace(star, rating) {
+      const stars = star.parentElement.querySelectorAll('span');
+      stars.forEach((s, index) => {
+        s.style.color = index < rating ? 'gold' : 'gray';
+      });
+      alert(`You rated this place ${rating} stars!`);
+    }
+
+    function toggleVisited(button) {
+      const card = button.closest('.card');
+      card.classList.toggle('visited');
+      button.textContent = card.classList.contains('visited') ? 'Visited' : 'Mark as Visited';
+      button.style.backgroundColor = card.classList.contains('visited') ? 'gray' : '#00796b';
+    }
+
+    function showFavorites() {
+      const cards = document.querySelectorAll('.card');
+      const button = document.querySelector('.controls button:nth-child(3)'); // The "Show Favorites" button
+
+      if (showOnlyFavorites) {
+        // Show all cards
+        cards.forEach(card => {
+          card.style.display = 'block';
+        });
+        button.textContent = 'Show Favorites'; // Update button text
+      } else {
+        // Show only favorite cards
+        cards.forEach(card => {
+          if (!card.classList.contains('favorited')) {
+            card.style.display = 'none';
+          }
+        });
+        button.textContent = 'Show All'; // Update button text
+      }
+
+      showOnlyFavorites = !showOnlyFavorites; // Toggle the state
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
