@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Places in srikakulam</title>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://www.holidaylandmark.com/blog/wp-content/uploads/2024/09/Top-Tourist-Places-to-Visit-in-Guntur6-1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 20px;
+      color: #ffffff;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffeb3b;
+      font-size: 3em;
+      font-weight: 600;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+      animation: fadeIn 2s ease-in-out;
+      margin-bottom: 30px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    .controls input,
+    .controls select,
+    .controls button {
+      padding: 10px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .controls input,
+    .controls select {
+      background-color: #ffffff;
+      color: #333;
+    }
+
+    .controls button {
+      background: linear-gradient(45deg, #00796b, #00b894);
+      color: white;
+      border: none;
+    }
+
+    .controls button:hover {
+      background: linear-gradient(45deg, #005f4f, #008f6b);
+      transform: scale(1.05);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Card hover effect: Scale and shadow glow */
+    .card:hover {
+      transform: translateY(-10px) scale(1.05); /* Lift and scale the card */
+      box-shadow: 0 8px 20px rgba(0, 255, 255, 0.6), 0 16px 30px rgba(0, 255, 255, 0.4); /* Glowing shadow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+      border: 2px solid #00ffcc; /* Neon border */
+    }
+
+    /* Image hover effect: Zoom in */
+    .card img:hover {
+      transform: scale(1.1); /* Zoom in the image */
+      transition: transform 0.3s ease; /* Smooth transition */
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      cursor: pointer;
+      border-bottom: 2px solid #00796b;
+      transition: transform 0.3s ease;
+    }
+
+    .description {
+      padding: 15px;
+      font-size: 15px;
+      color: #444;
+      text-align: justify;
+      line-height: 1.6;
+    }
+
+    .place-name {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #00796b;
+      margin: 10px 0;
+    }
+
+    .favorite-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      color: white;
+      opacity: 0.9;
+      transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 4px;
+      border-radius: 50%;
+    }
+
+    .favorite-icon:hover {
+      transform: scale(1.3);
+      color: gold;
+    }
+
+    .card.favorited .favorite-icon {
+      color: red;
+    }
+
+    .rating span {
+      font-size: 20px;
+      cursor: pointer;
+      color: gray;
+      transition: color 0.3s ease;
+    }
+
+    .rating span:hover,
+    .rating span:hover ~ span {
+      color: gold;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px); /* Blur effect for modal background */
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .modal-content {
+      display: flex;
+      flex-wrap: wrap;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 1000px;
+      gap: 30px;
+      box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc, 0 0 45px #00ffcc;
+      border: 2px solid #00ffcc;
+      transition: box-shadow 0.3s ease, border 0.3s ease;
+    }
+
+    .modal img {
+      width: 320px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-details {
+      font-size: 15px;
+      color: #333;
+      max-width: 600px;
+    }
+
+    .modal-details h2 {
+      margin-top: 0;
+      color: #00796b;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    .modal-details p {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+
+    .close {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      z-index: 10000;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    body.dark-mode .card {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <h1 data-aos="fade-down">Top Places in srikakulam</h1>
+
+  <div class="controls">
+    <input type="text" id="searchBar" placeholder="Search for a place..." oninput="filterPlaces()" />
+    <select id="sortOptions" onchange="sortPlaces()">
+      <option value="name">Sort by Name</option>
+      <option value="budget">Sort by Budget</option>
+    </select>
+    <button onclick="showFavorites()">Show Favorites</button>
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </div>
+
+  <div class="grid" id="placesGrid"></div>
+
+  <div class="modal" id="modal" onclick="outsideModalClose(event)">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+      <img id="modalImg" src="" alt="Location Image" />
+      <div class="modal-details" id="modalDetails"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    const places = [
+        {
+          name: "Srikurmam",
+          img: "https://media-cdn.tripadvisor.com/media/photo-s/1b/38/3c/a8/srikurmam-temple.jpg",
+          description: "Famous for the Sri Kurmanatha Swamy Temple, a significant pilgrimage site dedicated to Lord Vishnu. The temple is unique as it is built in the form of a tortoise (Kurma).",
+          when: "October to March",
+          how: "🚗 Srikakulam → Srikurmam Temple",
+          location: "Srikurmam",
+          budget: "INR 100 - 300",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Srikurmam+Temple"
+        },
+        {
+          name: "Arasavalli",
+          img: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Arasavilli_Sri_Suryanarayanamurty_Temple_of_Srikakulam%2C_Andhra_Pradesh_%283%29.jpg",
+          description: "Oldest temple dedicated to the Sun God in India.",
+          when: "October to February",
+          how: "🚗 Srikakulam → Arasavalli Temple",
+          location: "Arasavalli",
+          budget: "INR 50 - 200",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Arasavalli+Temple"
+        },
+        {
+          name: "Srikakulam Fort",
+          img: "https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/01/580e3a24a86d898335c09355aa0dbe41_400x400.jpg",
+          description: "Colonial-era fort showcasing regional history.",
+          when: "All seasons",
+          how: "🚗 Srikakulam → Fort",
+          location: "Srikakulam",
+          budget: "Free",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Fort"
+        },
+        {
+          name: "Kalingapatnam Beach",
+          img: "https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2023/12/29/c0b646e2253614bf29365ac2c2c40f67_400x400.jpg",
+          description: "Beach with serene sunsets at the river and sea confluence.",
+          when: "October to March",
+          how: "🚗 Srikakulam → Kalingapatnam",
+          location: "Kalingapatnam",
+          budget: "INR 0 - 100",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Kalingapatnam+Beach"
+        },
+        {
+          name: "Vamsadhara River",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvcmoB5EaMjQBEiJX0sxUt9Uzdf1Sdj2hm9w&s",
+          description: "Scenic river ideal for relaxation along its banks.",
+          when: "All year",
+          how: "🚗 Drive along river spots",
+          location: "Vamsadhara River",
+          budget: "Free",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Vamsadhara+River"
+        },
+        {
+          name: "Panchadarla",
+          img: "https://xploreall.com/wp-content/uploads/2021/10/Panchadarla-Uma-Dharmalingeswara-Temple.png",
+          description: "Hilly and serene spot perfect for nature lovers and trekking.",
+          when: "October to February",
+          how: "🚗 Srikakulam → Panchadarla",
+          location: "Panchadarla",
+          budget: "INR 50 - 100",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Panchadarla"
+        },
+        {
+          name: "Narasapuram",
+          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Dawn_%40_Godavari.JPG/220px-Dawn_%40_Godavari.JPG",
+          description: "Peaceful village with traditional lifestyle and crafts.",
+          when: "All year",
+          how: "🚗 Srikakulam → Narasapuram",
+          location: "Narasapuram",
+          budget: "Free",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Narasapuram"
+        },
+        {
+          name: "Brahmamgari Matam",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvDNj1CzUOTmin2Q3RLHe-eEGmLI_5qa09uw&s",
+          description: "Spiritual temple dedicated to Saint Brahma.",
+          when: "All year",
+          how: "🚗 Srikakulam → Brahmamgari Matam",
+          location: "Brahmamgari Matam",
+          budget: "Free",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Brahmamgari+Matam"
+        },
+        {
+          name: "Tekkali",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRelIpEeEOksUm-Nx_FRnSKUJZpXjHkiIDIKg&s",
+          description: "Temple town reflecting Andhra's traditions.",
+          when: "October to February",
+          how: "🚗 Srikakulam → Tekkali",
+          location: "Tekkali",
+          budget: "INR 50 - 200",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Tekkali"
+        },
+        {
+          name: "Gopalaswamy Temple",
+          img: "https://cdnbbsr.s3waas.gov.in/s3a29d1598024f9e87beab4b98411d48ce/uploads/2021/03/2021032646-scaled.jpg",
+          description: "Temple on a hill dedicated to Lord Krishna, surrounded by nature.",
+          when: "November to February",
+          how: "🚗 Srikakulam → Gopalaswamy Hill",
+          location: "Gopalaswamy Temple",
+          budget: "INR 50 - 200",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Gopalaswamy+Temple"
+        },
+        {
+          name: "Sompeta",
+          img: "https://content.jdmagicbox.com/comp/srikakulam/w7/9999p8942.8942.180118120937.z4w7/catalogue/pj-beach-srikakulam-resorts-d2dyi982fd.jpg?clr=",
+          description: "Coastal town with scenic views and local fishing culture.",
+          when: "October to March",
+          how: "🚗 Srikakulam → Sompeta Beach",
+          location: "Sompeta",
+          budget: "INR 0 - 150",
+          directions: "https://www.google.com/maps/dir/Srikakulam/Sompeta"
+        }
+      ];
+
+    const grid = document.getElementById('placesGrid');
+    places.forEach(place => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-aos', 'zoom-in');
+      card.innerHTML = `
+        <img src="${place.img}" onclick='openModal(${JSON.stringify(place)})' />
+        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+        <div class="description">${place.description}</div>
+        <div class="place-name">${place.name}</div>
+        <div class="rating">
+          <span onclick="ratePlace(this, 1)">★</span>
+          <span onclick="ratePlace(this, 2)">★</span>
+          <span onclick="ratePlace(this, 3)">★</span>
+          <span onclick="ratePlace(this, 4)">★</span>
+          <span onclick="ratePlace(this, 5)">★</span>
+        </div>
+        <button onclick="toggleVisited(this)">Mark as Visited</button>
+      `;
+      card.querySelector('.favorite-icon').addEventListener('click', function(event) {
+        event.stopPropagation();
+        card.classList.toggle('favorited');
+      });
+      grid.appendChild(card);
+    });
+
+    let showOnlyFavorites = false; // Track the toggle state
+
+    function openModal(place) {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'flex';
+      document.getElementById('modalImg').src = place.img;
+
+      const mapQuery = encodeURIComponent(place.location);
+      document.getElementById('modalDetails').innerHTML = `
+        <h2>${place.name}</h2>
+        <p><strong>Description:</strong> ${place.description}</p>
+        <p><strong>Best Time to Visit:</strong> ${place.when}</p>
+        <p><strong>How to Reach:</strong> ${place.how}</p>
+        <p><strong>Location:</strong> ${place.location}</p>
+        <p><strong>Estimated Budget:</strong> ${place.budget}</p>
+        <iframe 
+          width="100%" 
+          height="250" 
+          style="margin-top: 15px; border: none; border-radius: 12px;"
+          src="https://www.google.com/maps?q=${mapQuery}&output=embed">
+        </iframe>
+      `;
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    function outsideModalClose(event) {
+      const modalContent = document.querySelector('.modal-content');
+      if (!modalContent.contains(event.target)) {
+        closeModal();
+      }
+    }
+
+    function filterPlaces() {
+      const query = document.getElementById('searchBar').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const placeName = card.querySelector('.place-name').textContent.toLowerCase();
+        if (placeName.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function sortPlaces() {
+      const option = document.getElementById('sortOptions').value;
+      const grid = document.getElementById('placesGrid');
+      const cards = Array.from(grid.children);
+
+      cards.sort((a, b) => {
+        if (option === 'name') {
+          return a.querySelector('.place-name').textContent.localeCompare(b.querySelector('.place-name').textContent);
+        } else if (option === 'budget') {
+          const budgetA = parseInt(a.querySelector('.description').textContent.match(/\d+/) || 0);
+          const budgetB = parseInt(b.querySelector('.description').textContent.match(/\d+/) || 0);
+          return budgetA - budgetB;
+        }
+      });
+
+      cards.forEach(card => grid.appendChild(card));
+    }
+
+    function ratePlace(star, rating) {
+      const stars = star.parentElement.querySelectorAll('span');
+      stars.forEach((s, index) => {
+        s.style.color = index < rating ? 'gold' : 'gray';
+      });
+      alert(`You rated this place ${rating} stars!`);
+    }
+
+    function toggleVisited(button) {
+      const card = button.closest('.card');
+      card.classList.toggle('visited');
+      button.textContent = card.classList.contains('visited') ? 'Visited' : 'Mark as Visited';
+      button.style.backgroundColor = card.classList.contains('visited') ? 'gray' : '#00796b';
+    }
+
+    function showFavorites() {
+      const cards = document.querySelectorAll('.card');
+      const button = document.querySelector('.controls button:nth-child(3)'); // The "Show Favorites" button
+
+      if (showOnlyFavorites) {
+        // Show all cards
+        cards.forEach(card => {
+          card.style.display = 'block';
+        });
+        button.textContent = 'Show Favorites'; // Update button text
+      } else {
+        // Show only favorite cards
+        cards.forEach(card => {
+          if (!card.classList.contains('favorited')) {
+            card.style.display = 'none';
+          }
+        });
+        button.textContent = 'Show All'; // Update button text
+      }
+
+      showOnlyFavorites = !showOnlyFavorites; // Toggle the state
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>

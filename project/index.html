@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tourist Website Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh;
+      background: url('https://images.pexels.com/photos/1004584/pexels-photo-1004584.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      width: 1000px;
+      padding: 20px;
+    }
+
+    .left-box {
+      width: 45%;
+      padding: 50px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.9);
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 255, 204, 0.8);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .left-box:hover {
+      transform: scale(1.05);
+    }
+
+    .left-box h2, .left-box p {
+      color: white;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 1);
+    }
+
+    .right-box {
+      width: 320px;
+      padding: 25px;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.9);
+      text-align: center;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .right-box:hover {
+      transform: scale(1.05);
+    }
+
+    .form-box h2 {
+      color: white;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      font-weight: 600;
+    }
+
+    .input-group {
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      color: white;
+      border: 2px solid rgba(0, 255, 204, 0.5);
+      border-radius: 8px;
+      outline: none;
+      background: rgba(0, 255, 204, 0.1);
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #00ffcc, #008080);
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 1);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    p { color: white; margin-top: 20px; }
+    a { color: #00ffcc; text-decoration: none; font-weight: 600; }
+    a:hover { color: #008080; }
+
+    .form-box {
+      display: none;
+    }
+
+    .form-box.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-box">
+      <h2>DESTINATION UNCOVERED</h2>
+      <p>TOURISM AND CULTURE GUIDE</p>
+    </div>
+    <div class="right-box">
+      <!-- Login Form -->
+      <div class="form-box login active">
+        <h2><i class="fas fa-user-circle"></i> Login</h2>
+        <form id="loginForm">
+          <div class="input-group">
+            <input type="email" name="email" placeholder="Email" required>
+          </div>
+          <div class="input-group">
+            <input type="password" name="password" placeholder="Password" required>
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="#" class="toggle-form">Sign Up</a></p>
+      </div>
+
+      <!-- Sign Up Form -->
+      <div class="form-box signup">
+        <h2><i class="fas fa-user-plus"></i> Sign Up</h2>
+        <form id="signupForm">
+          <div class="input-group">
+            <input type="email" name="email" placeholder="Email" required>
+          </div>
+          <div class="input-group">
+            <input type="password" name="password" placeholder="Password" required>
+          </div>
+          <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="#" class="toggle-form">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCgyr8QFNtnMqHFkUPy6tysSTqzvtbjxE8",
+      authDomain: "tourism-c84.firebaseapp.com",
+      projectId: "tourism-c84",
+      storageBucket: "tourism-c84.appspot.com",
+      messagingSenderId: "432744161233",
+      appId: "1:432744161233:web:e3577c95c014ce496d4af0",
+      measurementId: "G-SMVGZSGJQX"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Sign-Up Logic
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Account created successfully!");
+          document.querySelector(".form-box.login").classList.add("active");
+          document.querySelector(".form-box.signup").classList.remove("active");
+        })
+        .catch((error) => {
+          alert("Error: " + error.message);
+        });
+    });
+
+    // Login Logic
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Login successful!");
+          window.location.href = "map.html"; // Redirect to map.html after login
+        })
+        .catch((error) => {
+          alert("Error: " + error.message);
+        });
+    });
+
+    // Toggle between Login and Sign Up
+    document.querySelectorAll(".toggle-form").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelector(".form-box.login").classList.toggle("active");
+        document.querySelector(".form-box.signup").classList.toggle("active");
+      });
+    });
+  </script>
+</body>
+</html>

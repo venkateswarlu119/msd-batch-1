@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Andhra Pradesh</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --hover-color: #1d4ed8;
+            --text-color: #1f2937;
+            --bg-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        .map-section {
+            position: relative;
+            margin: 2rem auto;
+            max-width: 1000px;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 0.5rem;
+        }
+
+        .marker-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .marker {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: red;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
+        /* Marker Positions */
+        .marker.visakhapatnam { top: 23.5%; left: 77%; }
+        .marker.guntur { top: 41%; left: 45%; }
+        .marker.chittoor { top: 89%; left: 29%; }
+        .marker.kadapa { top: 70%; left: 26%; }
+        .marker.anantapur { top: 68%; left: 12%; }
+        .marker.prakasam { top: 58%; left: 35%; }
+        .marker.nellore { top: 71%; left: 39%; }
+        .marker.kurnool { top: 51%; left: 17%; }
+        .marker.krishna { top: 42%; left: 50%; }
+        .marker.srikakulam { top: 6%; left: 92%; }
+        .marker.vizianagaram { top: 18%; left: 79%; }
+        .marker.west-godavari { top: 38%; left: 52%; }
+        .marker.east-godavari { top: 34%; left: 65%; }
+
+        .popup {
+            position: absolute;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            padding: 1rem;
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .marker:hover .popup {
+            display: block;
+        }
+
+        .popup h3 {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .popup p {
+            font-size: 0.9rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .details-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .details-link:hover {
+            background-color: var(--hover-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Discover Andhra Pradesh</h1>
+        </header>
+
+        <section class="map-section">
+            <img src="https://i.postimg.cc/YSy2BjW5/ap-map.jpg" alt="Map of Andhra Pradesh" class="map-image">
+            <div class="marker-container">
+
+                <!-- Markers with Popups -->
+                <div class="marker visakhapatnam">
+                    <div class="popup">
+                        <h3>Visakhapatnam</h3>
+                        <p>"Where golden beaches meet ancient heritage."</p>
+                        <a href="vizag.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+
+                <div class="marker guntur">
+                    <div class="popup">
+                        <h3>Guntur</h3>
+                        <p>"Famous for chilies and cultural heritage."</p>
+                        <a href="guntur.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+
+                <div class="marker chittoor">
+                    <div class="popup">
+                        <h3>Chittoor</h3>
+                        <p>"A land of temples and natural beauty."</p>
+                        <a href="chittor.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+
+                <div class="marker kadapa">
+                    <div class="popup">
+                        <h3>Kadapa</h3>
+                        <p>"Historic forts and scenic surroundings."</p>
+                        <a href="ysr kadapa.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+
+                <div class="marker kurnool">
+                    <div class="popup">
+                        <h3>Kurnool</h3>
+                        <p>"Known for the stunning Belum Caves."</p>
+                        <a href="kurnool.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+
+                <div class="marker anantapur">
+                    <div class="popup">
+                        <h3>Anantapur</h3>
+                        <p>"Home to ancient forts and silk weaving."</p>
+                        <a href="anantapur.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+
+                <div class="marker nellore">
+                    <div class="popup">
+                        <h3>Nellore</h3>
+                        <p>"Known for its agricultural prominence."</p>
+                        <a href="nellore.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+
+                <div class="marker prakasam">
+                    <div class="popup">
+                        <h3>Prakasam</h3>
+                        <p>"Famous for Ongole cattle."</p>
+                        <a href="prakasam.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+                <div class="marker srikakulam">
+                    <div class="popup">
+                        <h3>Srikakulam</h3>
+                        <p>"The northernmost district with beautiful beaches."</p>
+                        <a href="srikakulam.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+                <div class="marker vizianagaram">
+                    <div class="popup">
+                        <h3>Vizianagaram</h3>
+                        <p>"Known for its royal heritage, palaces, and temples. A city of culture and history."</p>
+                        <a href="Vizianagaram.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+<div class="marker west-godavari">
+    <div class="popup">
+        <h3>West Godavari</h3>
+        <p><strong>Also known as:</strong> Rice Bowl of Andhra</p>
+        <p>"Famous for its lush green fields, serene backwaters, and rich cultural heritage."</p>
+        <a href="West_godavari.html" class="details-link">Explore More</a>
+    </div>
+</div>
+<div class="marker east-godavari">
+    <div class="popup">
+        <h3>East Godavari</h3>
+        <p><strong>Also known as:</strong> The Land of Rivers</p>
+        <p>"Famous for its scenic landscapes, coconut groves, and the beautiful Konaseema region."</p>
+        <a href="east godavari.html" class="details-link">Explore More</a>
+    </div>
+</div>
+               <div class="marker krishna">
+                    <div class="popup">
+                        <h3>Krishna</h3>
+                        <p>"Famous for the Krishna River and Vijayawada."</p>
+                        <a href="krishna.html" class="details-link">Explore More</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
