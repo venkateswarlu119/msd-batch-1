@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Places in krishna</title>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://www.holidaylandmark.com/blog/wp-content/uploads/2024/09/Top-Tourist-Places-to-Visit-in-Guntur6-1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 20px;
+      color: #ffffff;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffeb3b;
+      font-size: 3em;
+      font-weight: 600;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+      animation: fadeIn 2s ease-in-out;
+      margin-bottom: 30px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    .controls input,
+    .controls select,
+    .controls button {
+      padding: 10px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .controls input,
+    .controls select {
+      background-color: #ffffff;
+      color: #333;
+    }
+
+    .controls button {
+      background: linear-gradient(45deg, #00796b, #00b894);
+      color: white;
+      border: none;
+    }
+
+    .controls button:hover {
+      background: linear-gradient(45deg, #005f4f, #008f6b);
+      transform: scale(1.05);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Card hover effect: Scale and shadow glow */
+    .card:hover {
+      transform: translateY(-10px) scale(1.05); /* Lift and scale the card */
+      box-shadow: 0 8px 20px rgba(0, 255, 255, 0.6), 0 16px 30px rgba(0, 255, 255, 0.4); /* Glowing shadow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+      border: 2px solid #00ffcc; /* Neon border */
+    }
+
+    /* Image hover effect: Zoom in */
+    .card img:hover {
+      transform: scale(1.1); /* Zoom in the image */
+      transition: transform 0.3s ease; /* Smooth transition */
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      cursor: pointer;
+      border-bottom: 2px solid #00796b;
+      transition: transform 0.3s ease;
+    }
+
+    .description {
+      padding: 15px;
+      font-size: 15px;
+      color: #444;
+      text-align: justify;
+      line-height: 1.6;
+    }
+
+    .place-name {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #00796b;
+      margin: 10px 0;
+    }
+
+    .favorite-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      color: white;
+      opacity: 0.9;
+      transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 4px;
+      border-radius: 50%;
+    }
+
+    .favorite-icon:hover {
+      transform: scale(1.3);
+      color: gold;
+    }
+
+    .card.favorited .favorite-icon {
+      color: red;
+    }
+
+    .rating span {
+      font-size: 20px;
+      cursor: pointer;
+      color: gray;
+      transition: color 0.3s ease;
+    }
+
+    .rating span:hover,
+    .rating span:hover ~ span {
+      color: gold;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px); /* Blur effect for modal background */
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .modal-content {
+      display: flex;
+      flex-wrap: wrap;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 1000px;
+      gap: 30px;
+      box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc, 0 0 45px #00ffcc;
+      border: 2px solid #00ffcc;
+      transition: box-shadow 0.3s ease, border 0.3s ease;
+    }
+
+    .modal img {
+      width: 320px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-details {
+      font-size: 15px;
+      color: #333;
+      max-width: 600px;
+    }
+
+    .modal-details h2 {
+      margin-top: 0;
+      color: #00796b;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    .modal-details p {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+
+    .close {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      z-index: 10000;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    body.dark-mode .card {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <h1 data-aos="fade-down">Top Places in krishna</h1>
+
+  <div class="controls">
+    <input type="text" id="searchBar" placeholder="Search for a place..." oninput="filterPlaces()" />
+    <select id="sortOptions" onchange="sortPlaces()">
+      <option value="name">Sort by Name</option>
+      <option value="budget">Sort by Budget</option>
+    </select>
+    <button onclick="showFavorites()">Show Favorites</button>
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </div>
+
+  <div class="grid" id="placesGrid"></div>
+
+  <div class="modal" id="modal" onclick="outsideModalClose(event)">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+      <img id="modalImg" src="" alt="Location Image" />
+      <div class="modal-details" id="modalDetails"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+    const places = [
+    {
+  name: "Tirupati",
+  img: "https://s7ap1.scene7.com/is/image/incredibleindia/2-sri-venkateswara-swamy-vaari-temple-2-attr-hero?qlt=82&ts=1726816589608",
+  description: "Home to the famous Tirumala Venkateswara Temple, Tirupati is a major pilgrimage destination and one of the wealthiest temples in the world. The temple is known for its intricate architecture and is surrounded by scenic hills.",
+  when: "All year",
+  how: "🚗 Chittoor → Tirupati",
+  location: "Tirupati",
+  budget: "INR 100 - 500",
+  directions: "https://www.google.com/maps?q=Tirupati"
+},
+{
+  name: "Tirumala",
+  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Tirumala_090615.jpg/1200px-Tirumala_090615.jpg",
+  description: "Situated above Tirupati, Tirumala is the hill town where the Venkateswara Temple is located. The journey offers stunning views and is a spiritual experience.",
+  when: "October to March",
+  how: "🚗 Tirupati → Tirumala (Ghat Road or footpath)",
+  location: "Tirumala",
+  budget: "INR 100 - 300",
+  directions: "https://www.google.com/maps?q=Tirumala"
+},
+{
+  name: "Kanipakam",
+  img: "https://www.mystreal.com/_next/image/?url=%2Ftemple%2Fkanipakam-vinayaka-temple%2Fconclusion.jpeg&w=3840&q=75",
+  description: "Known for the ancient Kanipakam Vinayaka Temple, dedicated to Lord Ganesha. It is famous for its self-manifested idol and attracts numerous pilgrims.",
+  when: "All year",
+  how: "🚗 Chittoor → Kanipakam",
+  location: "Kanipakam",
+  budget: "INR 20 - 100",
+  directions: "https://www.google.com/maps?q=Kanipakam+Vinayaka+Temple"
+},
+{
+  name: "Chandragiri Fort",
+  img: "https://assets.simplotel.com/simplotel/image/upload/x_0,y_875,w_3000,h_2250,r_0,c_crop,q_80,fl_progressive/w_500,f_auto,c_fit/raj-park-hotel---tirupati/nilotpal-maity-yMY2sf5UXZY-unsplash_mo2utd",
+  description: "This historic fort dates back to the 11th century and showcases Indo-Saracenic architecture. Features ruins and the Raja Mahal museum.",
+  when: "October to February",
+  how: "🚗 Tirupati → Chandragiri",
+  location: "Chandragiri Fort",
+  budget: "INR 20 - 100",
+  directions: "https://www.google.com/maps?q=Chandragiri+Fort"
+},
+{
+  name: "Kailasakona Waterfalls",
+  img: "https://www.holidify.com/images/cmsuploads/compressed/Nagalapuram_Hills_20180913012013.JPG",
+  description: "A beautiful waterfall near Kailasakona village, perfect for relaxation and picnics. Surrounded by nature and hills.",
+  when: "November to March",
+  how: "🚗 Tirupati → Kailasakona Falls",
+  location: "Kailasakona Waterfalls",
+  budget: "INR 10 - 50",
+  directions: "https://www.google.com/maps?q=Kailasakona+Waterfalls"
+},
+{
+  name: "Srikalahasti",
+  img: "https://upload.wikimedia.org/wikipedia/commons/9/98/Sri_Kala_Hasti.jpg",
+  description: "Famous for the Srikalahasteeswara Temple dedicated to Lord Shiva. Noted for its unique architecture and Vayu (Air) element significance.",
+  when: "All year",
+  how: "🚗 Tirupati → Srikalahasti",
+  location: "Srikalahasti",
+  budget: "INR 50 - 150",
+  directions: "https://www.google.com/maps?q=Srikalahasti+Temple"
+},
+{
+  name: "Nagari",
+  img: "https://content.jdmagicbox.com/comp/vellore/t1/9999px416.x416.230624213330.b9t1/catalogue/sajra-fort-vellore-forts-1IBPy5IYD5.jpg",
+  description: "Known for its scenic hills and the historic Nagari Hills Fort. A great spot for nature enthusiasts and history buffs.",
+  when: "October to February",
+  how: "🚗 Chittoor → Nagari",
+  location: "Nagari",
+  budget: "Free - INR 50",
+  directions: "https://www.google.com/maps?q=Nagari+Fort+Chittoor"
+},
+{
+  name: "Vellore Fort",
+  img: "https://www.trawell.in/admin/images/upload/548011903Vellore_Fort_Main.jpg",
+  description: "A massive 16th-century fort with a moat, temples, and Islamic structures. Located close to the Chittoor border.",
+  when: "All year",
+  how: "🚗 Chittoor → Vellore",
+  location: "Vellore Fort",
+  budget: "INR 30 - 100",
+  directions: "https://www.google.com/maps?q=Vellore+Fort"
+},
+{
+  name: "Pakala Lake",
+  img: "https://content.jdmagicbox.com/comp/narsampet/s1/9999p8718.8718.180119134004.e6s1/catalogue/pakala-lake-khanapur-narsampet-0p70m2u13e.jpg",
+  description: "A serene and scenic lake ideal for family outings and photography. Surrounded by greenery, it's peaceful and relaxing.",
+  when: "October to March",
+  how: "🚗 Chittoor → Pakala Lake",
+  location: "Pakala Lake",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Pakala+Lake+Chittoor"
+},
+{
+  name: "Sri Venkateswara Zoological Park",
+  img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmDaRebhE7DxDALDp4G6BU_TaF9hLgEgu9ag&s",
+  description: "A large zoo near Tirupati home to lions, tigers, bears, and birds. Great for family visits and nature education.",
+  when: "October to March",
+  how: "🚗 Tirupati → Zoo",
+  location: "Sri Venkateswara Zoological Park",
+  budget: "INR 20 - 100",
+  directions: "https://www.google.com/maps?q=Sri+Venkateswara+Zoological+Park"
+},
+{
+  name: "Bhoga Nandeeshwara Temple",
+  img: "https://kevinstandagephotography.wordpress.com/wp-content/uploads/2020/05/cover-3.jpg",
+  description: "An ancient Shiva temple complex at the base of Nandi Hills, known for its beautiful surroundings and detailed carvings.",
+  when: "All year",
+  how: "🚗 Tirupati → Nandi Hills",
+  location: "Bhoga Nandeeshwara Temple",
+  budget: "INR 10 - 50",
+  directions: "https://www.google.com/maps?q=Bhoga+Nandeeshwara+Temple"
+},
+{
+  name: "Garuda Varadaraaja Perumal Temple",
+  img: "https://cdn1.tripoto.com/media/filter/nl/img/2380291/Image/1699644429_athi_varadaraja_perumal_temple_kanchipuram.jpg.webp",
+  description: "Located in Tirupati, this temple dedicated to Lord Vishnu is surrounded by greenery and perfect for meditation and prayer.",
+  when: "All year",
+  how: "🚗 Within Tirupati city",
+  location: "Garuda Varadaraaja Perumal Temple",
+  budget: "Free - INR 50",
+  directions: "https://www.google.com/maps?q=Garuda+Varadaraaja+Temple+Tirupati"
+},
+{
+  name: "Sri Kalyana Venkateswara Swamy Temple",
+  img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQVM1J6TEn4eVSMX2VGdm8PRsE4s__nnHQ8A&s",
+  description: "Located in Srinivasa Mangapuram, this temple is dedicated to Lord Venkateswara and known for its rituals and spiritual energy.",
+  when: "All year",
+  how: "🚗 Tirupati → Srinivasa Mangapuram",
+  location: "Sri Kalyana Venkateswara Swamy Temple",
+  budget: "INR 20 - 100",
+  directions: "https://www.google.com/maps?q=Sri+Kalyana+Venkateswara+Swamy+Temple"
+},
+{
+  name: "Panchamukha Anjaneya Temple",
+  img: "https://upload.wikimedia.org/wikipedia/commons/f/f6/Panchamukhi_Hanuman_The_Rare_Five_Faced_Hanuman_%28252138845%29.jpeg",
+  description: "This temple in Tirupati is dedicated to Lord Hanuman and features a rare five-faced idol. A peaceful place for devotion.",
+  when: "All year",
+  how: "🚗 Tirupati → Panchamukha Temple",
+  location: "Panchamukha Anjaneya Temple",
+  budget: "INR 10 - 50",
+  directions: "https://www.google.com/maps?q=Panchamukha+Anjaneya+Temple"
+},
+{
+  name: "Kottai Mariamman Temple",
+  img: "https://imgtemple.dinamalar.com/kovilimages/T_500_622.jpg",
+  description: "An ancient temple in Chittoor dedicated to Goddess Mariamman, known for vibrant festivals and traditional architecture.",
+  when: "All year",
+  how: "🚗 Chittoor → Town center",
+  location: "Kottai Mariamman Temple",
+  budget: "Free - INR 50",
+  directions: "https://www.google.com/maps?q=Kottai+Mariamman+Temple"
+}
+];
+    const grid = document.getElementById('placesGrid');
+    places.forEach(place => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-aos', 'zoom-in');
+      card.innerHTML = `
+        <img src="${place.img}" onclick='openModal(${JSON.stringify(place)})' />
+        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+        <div class="description">${place.description}</div>
+        <div class="place-name">${place.name}</div>
+        <div class="rating">
+          <span onclick="ratePlace(this, 1)">★</span>
+          <span onclick="ratePlace(this, 2)">★</span>
+          <span onclick="ratePlace(this, 3)">★</span>
+          <span onclick="ratePlace(this, 4)">★</span>
+          <span onclick="ratePlace(this, 5)">★</span>
+        </div>
+        <button onclick="toggleVisited(this)">Mark as Visited</button>
+      `;
+      card.querySelector('.favorite-icon').addEventListener('click', function(event) {
+        event.stopPropagation();
+        card.classList.toggle('favorited');
+      });
+      grid.appendChild(card);
+    });
+
+    let showOnlyFavorites = false; // Track the toggle state
+
+    function openModal(place) {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'flex';
+      document.getElementById('modalImg').src = place.img;
+
+      const mapQuery = encodeURIComponent(place.location);
+      document.getElementById('modalDetails').innerHTML = `
+        <h2>${place.name}</h2>
+        <p><strong>Description:</strong> ${place.description}</p>
+        <p><strong>Best Time to Visit:</strong> ${place.when}</p>
+        <p><strong>How to Reach:</strong> ${place.how}</p>
+        <p><strong>Location:</strong> ${place.location}</p>
+        <p><strong>Estimated Budget:</strong> ${place.budget}</p>
+        <iframe 
+          width="100%" 
+          height="250" 
+          style="margin-top: 15px; border: none; border-radius: 12px;"
+          src="https://www.google.com/maps?q=${mapQuery}&output=embed">
+        </iframe>
+      `;
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    function outsideModalClose(event) {
+      const modalContent = document.querySelector('.modal-content');
+      if (!modalContent.contains(event.target)) {
+        closeModal();
+      }
+    }
+
+    function filterPlaces() {
+      const query = document.getElementById('searchBar').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const placeName = card.querySelector('.place-name').textContent.toLowerCase();
+        if (placeName.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function sortPlaces() {
+      const option = document.getElementById('sortOptions').value;
+      const grid = document.getElementById('placesGrid');
+      const cards = Array.from(grid.children);
+
+      cards.sort((a, b) => {
+        if (option === 'name') {
+          return a.querySelector('.place-name').textContent.localeCompare(b.querySelector('.place-name').textContent);
+        } else if (option === 'budget') {
+          const budgetA = parseInt(a.querySelector('.description').textContent.match(/\d+/) || 0);
+          const budgetB = parseInt(b.querySelector('.description').textContent.match(/\d+/) || 0);
+          return budgetA - budgetB;
+        }
+      });
+
+      cards.forEach(card => grid.appendChild(card));
+    }
+
+    function ratePlace(star, rating) {
+      const stars = star.parentElement.querySelectorAll('span');
+      stars.forEach((s, index) => {
+        s.style.color = index < rating ? 'gold' : 'gray';
+      });
+      alert(`You rated this place ${rating} stars!`);
+    }
+
+    function toggleVisited(button) {
+      const card = button.closest('.card');
+      card.classList.toggle('visited');
+      button.textContent = card.classList.contains('visited') ? 'Visited' : 'Mark as Visited';
+      button.style.backgroundColor = card.classList.contains('visited') ? 'gray' : '#00796b';
+    }
+
+    function showFavorites() {
+      const cards = document.querySelectorAll('.card');
+      const button = document.querySelector('.controls button:nth-child(3)'); // The "Show Favorites" button
+
+      if (showOnlyFavorites) {
+        // Show all cards
+        cards.forEach(card => {
+          card.style.display = 'block';
+        });
+        button.textContent = 'Show Favorites'; // Update button text
+      } else {
+        // Show only favorite cards
+        cards.forEach(card => {
+          if (!card.classList.contains('favorited')) {
+            card.style.display = 'none';
+          }
+        });
+        button.textContent = 'Show All'; // Update button text
+      }
+
+      showOnlyFavorites = !showOnlyFavorites; // Toggle the state
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>

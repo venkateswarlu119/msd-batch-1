@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Places in kadapa</title>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://www.holidaylandmark.com/blog/wp-content/uploads/2024/09/Top-Tourist-Places-to-Visit-in-Guntur6-1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 20px;
+      color: #ffffff;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffeb3b;
+      font-size: 3em;
+      font-weight: 600;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+      animation: fadeIn 2s ease-in-out;
+      margin-bottom: 30px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    .controls input,
+    .controls select,
+    .controls button {
+      padding: 10px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .controls input,
+    .controls select {
+      background-color: #ffffff;
+      color: #333;
+    }
+
+    .controls button {
+      background: linear-gradient(45deg, #00796b, #00b894);
+      color: white;
+      border: none;
+    }
+
+    .controls button:hover {
+      background: linear-gradient(45deg, #005f4f, #008f6b);
+      transform: scale(1.05);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Card hover effect: Scale and shadow glow */
+    .card:hover {
+      transform: translateY(-10px) scale(1.05); /* Lift and scale the card */
+      box-shadow: 0 8px 20px rgba(0, 255, 255, 0.6), 0 16px 30px rgba(0, 255, 255, 0.4); /* Glowing shadow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+      border: 2px solid #00ffcc; /* Neon border */
+    }
+
+    /* Image hover effect: Zoom in */
+    .card img:hover {
+      transform: scale(1.1); /* Zoom in the image */
+      transition: transform 0.3s ease; /* Smooth transition */
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      cursor: pointer;
+      border-bottom: 2px solid #00796b;
+      transition: transform 0.3s ease;
+    }
+
+    .description {
+      padding: 15px;
+      font-size: 15px;
+      color: #444;
+      text-align: justify;
+      line-height: 1.6;
+    }
+
+    .place-name {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #00796b;
+      margin: 10px 0;
+    }
+
+    .favorite-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      color: white;
+      opacity: 0.9;
+      transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 4px;
+      border-radius: 50%;
+    }
+
+    .favorite-icon:hover {
+      transform: scale(1.3);
+      color: gold;
+    }
+
+    .card.favorited .favorite-icon {
+      color: red;
+    }
+
+    .rating span {
+      font-size: 20px;
+      cursor: pointer;
+      color: gray;
+      transition: color 0.3s ease;
+    }
+
+    .rating span:hover,
+    .rating span:hover ~ span {
+      color: gold;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px); /* Blur effect for modal background */
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .modal-content {
+      display: flex;
+      flex-wrap: wrap;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 1000px;
+      gap: 30px;
+      box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc, 0 0 45px #00ffcc;
+      border: 2px solid #00ffcc;
+      transition: box-shadow 0.3s ease, border 0.3s ease;
+    }
+
+    .modal img {
+      width: 320px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-details {
+      font-size: 15px;
+      color: #333;
+      max-width: 600px;
+    }
+
+    .modal-details h2 {
+      margin-top: 0;
+      color: #00796b;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    .modal-details p {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+
+    .close {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      z-index: 10000;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    body.dark-mode .card {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <h1 data-aos="fade-down">Top Places in kadapa</h1>
+
+  <div class="controls">
+    <input type="text" id="searchBar" placeholder="Search for a place..." oninput="filterPlaces()" />
+    <select id="sortOptions" onchange="sortPlaces()">
+      <option value="name">Sort by Name</option>
+      <option value="budget">Sort by Budget</option>
+    </select>
+    <button onclick="showFavorites()">Show Favorites</button>
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </div>
+
+  <div class="grid" id="placesGrid"></div>
+
+  <div class="modal" id="modal" onclick="outsideModalClose(event)">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+      <img id="modalImg" src="" alt="Location Image" />
+      <div class="modal-details" id="modalDetails"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+    const places = [
+{
+  name: "Kadapa Fort",
+  img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVXYx-6MI0lKpAXiDeNynu-lCTqQoxpc_j2A&s",
+  description: "An ancient fort built during the 17th century, showcasing impressive architecture and offering panoramic views of the surrounding area.",
+  when: "October to February",
+  how: "🚗 Kadapa → Fort",
+  location: "Kadapa Fort",
+  budget: "INR 10 - 50",
+  directions: "https://www.google.com/maps?q=Kadapa+Fort"
+},
+{
+  name: "Gandi Anjaneya Swamy Temple",
+  img: "https://content3.jdmagicbox.com/comp/kadapa/j3/9999p8562.8562.181113142143.c3j3/catalogue/gandi-sri-anjaneya-temple-kadapa-lk9ovmf5mv.jpg",
+  description: "Dedicated to Lord Hanuman, this peaceful temple is known for its large Anjaneya idol and attracts many devotees.",
+  when: "All year",
+  how: "🚗 Kadapa → Gandi",
+  location: "Gandi Anjaneya Temple",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Gandi+Anjaneya+Temple"
+},
+{
+  name: "Ontimitta",
+  img: "https://famoustemplesofindia.com/wp-content/uploads/2024/04/Vontimitta-Temple-5-1024x768.jpg",
+  description: "Known for the Ontimitta Venkateswara Swamy Temple, a pilgrimage destination famous for its architectural beauty and vibrant festivals.",
+  when: "All year",
+  how: "🚗 Kadapa → Ontimitta",
+  location: "Ontimitta Temple",
+  budget: "INR 20 - 100",
+  directions: "https://www.google.com/maps?q=Ontimitta+Temple"
+},
+{
+  name: "Devuni Kadapa",
+  img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OZtb4F52bnqX96Bs7hwo4e-KOuIujj6UYQ&s",
+  description: "Famous for the Sri Lakshmi Venkateshwara Temple and several ancient spiritual sites, Devuni Kadapa is revered by pilgrims.",
+  when: "All year",
+  how: "🚗 Within Kadapa",
+  location: "Devuni Kadapa",
+  budget: "INR 20 - 50",
+  directions: "https://www.google.com/maps?q=Devuni+Kadapa"
+},
+{
+  name: "Jammalamadugu",
+  img: "https://touritvirtually.com/wp-content/uploads/2015/11/text%20pics/tiv_gandikota_text%20pics/Gandikota_1.jpg",
+  description: "Known for the Jammalamadugu Fort and the ancient Narasimha Swamy Temple, surrounded by scenic hills.",
+  when: "October to February",
+  how: "🚗 Kadapa → Jammalamadugu",
+  location: "Jammalamadugu",
+  budget: "INR 10 - 50",
+  directions: "https://www.google.com/maps?q=Jammalamadugu"
+},
+{
+  name: "Krishna Devaraya Statue",
+  img: "https://upload.wikimedia.org/wikipedia/commons/0/03/Vijayanagara.jpg",
+  description: "A major landmark in Kadapa commemorating the ruler of the Vijayanagara Empire. A symbol of heritage and pride.",
+  when: "All year",
+  how: "🚶‍♂ Within Kadapa",
+  location: "Krishna Devaraya Statue",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Krishna+Devaraya+Statue+Kadapa"
+},
+{
+  name: "Mylavaram Reservoir",
+  img: "https://myholidayhappiness.com/uploads/mylavaram-dam-6499.jpg",
+  description: "A scenic reservoir created by Mylavaram Dam, perfect for peaceful outings and photography.",
+  when: "October to March",
+  how: "🚗 Kadapa → Mylavaram",
+  location: "Mylavaram Reservoir",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Mylavaram+Reservoir"
+},
+{
+  name: "Yerrakunta",
+  img: "https://hblimg.mmtcdn.com/content/hubble/img/kadapatiowimages/mmt/activities/t_ufs/m_Pushpagiri_1_l_361_640.jpg",
+  description: "A picturesque village near Kadapa known for its temples and lush landscapes. Offers cultural and scenic charm.",
+  when: "All year",
+  how: "🚗 Kadapa → Yerrakunta",
+  location: "Yerrakunta",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Yerrakunta+Kadapa"
+},
+{
+  name: "Ramappa Lake",
+  img: "https://content.jdmagicbox.com/comp/warangal/s2/9999px870.x870.230201224549.c6s2/catalogue/ramappa-lake-boating-warangal-boating-clubs-lda93ft4nk.jpg",
+  description: "A serene lake ideal for relaxation, surrounded by natural beauty and calm waters.",
+  when: "October to March",
+  how: "🚗 Kadapa → Ramappa Lake",
+  location: "Ramappa Lake",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Ramappa+Lake+Kadapa"
+},
+{
+  name: "Kumarappa Chennakeshava Swamy Temple",
+  img: "https://res.cloudinary.com/chasset/c_fill,e_improve,f_webp,h_480,w_720/hbimages/desktop/1499848291154-sri-chennakesava-temple.jpg",
+  description: "An ancient Vishnu temple with classic architecture, attracting pilgrims from across the region.",
+  when: "All year",
+  how: "🚗 Kadapa → Kumarappa",
+  location: "Chennakeshava Swamy Temple",
+  budget: "INR 10 - 50",
+  directions: "https://www.google.com/maps?q=Chennakeshava+Swamy+Temple+Kadapa"
+},
+{
+  name: "Sree Siva Sankara Temple",
+  img: "https://content.jdmagicbox.com/v2/comp/kadapa/v8/9999p8562.8562.240506040402.j8v8/catalogue/sree-sree-sree-yellamma-thalli-amma-varu-vongimalla-kadapa-temples-3c9rx1ao1n-250.jpg",
+  description: "A peaceful Shiva temple known for its ambiance and spiritual energy.",
+  when: "All year",
+  how: "🚗 Kadapa → Local area",
+  location: "Siva Sankara Temple",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Sree+Siva+Sankara+Temple+Kadapa"
+},
+{
+  name: "Siddhavatam",
+  img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRfp7CL4-Y0luxkgm9Dat4El5s5HjoWIz_-w&s",
+  description: "A historic site known for the ancient Siddheswara Swamy Temple and heritage architecture.",
+  when: "October to February",
+  how: "🚗 Kadapa → Siddhavatam",
+  location: "Siddhavatam",
+  budget: "Free - INR 50",
+  directions: "https://www.google.com/maps?q=Siddhavatam+Temple"
+},
+{
+  name: "Nallamala Forest",
+  img: "https://travelsetu.com/apps/uploads/new_destinations_photos/destination/2024/01/01/0ac16b0e4d37e225a61f852673ba7fc6_1000x1000.jpg",
+  description: "Part of the Eastern Ghats, this forest is rich in wildlife and flora. Ideal for trekking and nature exploration.",
+  when: "November to February",
+  how: "🚶‍♂ Guided trek or forest access",
+  location: "Nallamala Forest",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Nallamala+Forest"
+},
+{
+  name: "Sadhumallappa Temple",
+  img: "https://d3sftlgbtusmnv.cloudfront.net/blog/wp-content/uploads/2024/09/Beautiful-temples-premises-in-Kadapa-Cover-Photo-840x425.jpg",
+  description: "A local temple of spiritual significance to villagers, this peaceful site is often visited during regional festivals.",
+  when: "All year",
+  how: "🚗 Kadapa → Local roads",
+  location: "Sadhumallappa Temple",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Sadhumallappa+Temple+Kadapa"
+},
+{
+  name: "Pushpagiri",
+  img: "https://d3sftlgbtusmnv.cloudfront.net/blog/wp-content/uploads/2024/09/Pushpagiri-Wildlife-Sanctuary-Cover-Photo-840x425.jpg",
+  description: "A naturally beautiful region near Kadapa with hills, trekking routes, and views of forests and wildlife.",
+  when: "October to February",
+  how: "🚗 Kadapa → Pushpagiri",
+  location: "Pushpagiri Hills",
+  budget: "Free",
+  directions: "https://www.google.com/maps?q=Pushpagiri+Hills+Kadapa"
+}
+];
+    const grid = document.getElementById('placesGrid');
+    places.forEach(place => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-aos', 'zoom-in');
+      card.innerHTML = `
+        <img src="${place.img}" onclick='openModal(${JSON.stringify(place)})' />
+        <span class="favorite-icon"><i class="fas fa-heart"></i></span>
+        <div class="description">${place.description}</div>
+        <div class="place-name">${place.name}</div>
+        <div class="rating">
+          <span onclick="ratePlace(this, 1)">★</span>
+          <span onclick="ratePlace(this, 2)">★</span>
+          <span onclick="ratePlace(this, 3)">★</span>
+          <span onclick="ratePlace(this, 4)">★</span>
+          <span onclick="ratePlace(this, 5)">★</span>
+        </div>
+        <button onclick="toggleVisited(this)">Mark as Visited</button>
+      `;
+      card.querySelector('.favorite-icon').addEventListener('click', function(event) {
+        event.stopPropagation();
+        card.classList.toggle('favorited');
+      });
+      grid.appendChild(card);
+    });
+
+    let showOnlyFavorites = false; // Track the toggle state
+
+    function openModal(place) {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'flex';
+      document.getElementById('modalImg').src = place.img;
+
+      const mapQuery = encodeURIComponent(place.location);
+      document.getElementById('modalDetails').innerHTML = `
+        <h2>${place.name}</h2>
+        <p><strong>Description:</strong> ${place.description}</p>
+        <p><strong>Best Time to Visit:</strong> ${place.when}</p>
+        <p><strong>How to Reach:</strong> ${place.how}</p>
+        <p><strong>Location:</strong> ${place.location}</p>
+        <p><strong>Estimated Budget:</strong> ${place.budget}</p>
+        <iframe 
+          width="100%" 
+          height="250" 
+          style="margin-top: 15px; border: none; border-radius: 12px;"
+          src="https://www.google.com/maps?q=${mapQuery}&output=embed">
+        </iframe>
+      `;
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    function outsideModalClose(event) {
+      const modalContent = document.querySelector('.modal-content');
+      if (!modalContent.contains(event.target)) {
+        closeModal();
+      }
+    }
+
+    function filterPlaces() {
+      const query = document.getElementById('searchBar').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const placeName = card.querySelector('.place-name').textContent.toLowerCase();
+        if (placeName.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function sortPlaces() {
+      const option = document.getElementById('sortOptions').value;
+      const grid = document.getElementById('placesGrid');
+      const cards = Array.from(grid.children);
+
+      cards.sort((a, b) => {
+        if (option === 'name') {
+          return a.querySelector('.place-name').textContent.localeCompare(b.querySelector('.place-name').textContent);
+        } else if (option === 'budget') {
+          const budgetA = parseInt(a.querySelector('.description').textContent.match(/\d+/) || 0);
+          const budgetB = parseInt(b.querySelector('.description').textContent.match(/\d+/) || 0);
+          return budgetA - budgetB;
+        }
+      });
+
+      cards.forEach(card => grid.appendChild(card));
+    }
+
+    function ratePlace(star, rating) {
+      const stars = star.parentElement.querySelectorAll('span');
+      stars.forEach((s, index) => {
+        s.style.color = index < rating ? 'gold' : 'gray';
+      });
+      alert(`You rated this place ${rating} stars!`);
+    }
+
+    function toggleVisited(button) {
+      const card = button.closest('.card');
+      card.classList.toggle('visited');
+      button.textContent = card.classList.contains('visited') ? 'Visited' : 'Mark as Visited';
+      button.style.backgroundColor = card.classList.contains('visited') ? 'gray' : '#00796b';
+    }
+
+    function showFavorites() {
+      const cards = document.querySelectorAll('.card');
+      const button = document.querySelector('.controls button:nth-child(3)'); // The "Show Favorites" button
+
+      if (showOnlyFavorites) {
+        // Show all cards
+        cards.forEach(card => {
+          card.style.display = 'block';
+        });
+        button.textContent = 'Show Favorites'; // Update button text
+      } else {
+        // Show only favorite cards
+        cards.forEach(card => {
+          if (!card.classList.contains('favorited')) {
+            card.style.display = 'none';
+          }
+        });
+        button.textContent = 'Show All'; // Update button text
+      }
+
+      showOnlyFavorites = !showOnlyFavorites; // Toggle the state
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
